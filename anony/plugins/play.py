@@ -132,15 +132,12 @@ async def play_hndlr(
             return
 
     if not file.file_path or not (str(file.file_path).startswith("http") or Path(file.file_path).exists()):
-        file.file_path = yt.get_local_path(file.id, video=video)
-
-        if not file.file_path:
-            if m.lang.get("play_downloading") != m.lang.get("play_searching"):
-                try:
-                    await sent.edit_text(m.lang["play_downloading"])
-                except Exception:
-                    pass
-            file.file_path = await anon.download_track(file)
+        if m.lang.get("play_downloading") != m.lang.get("play_searching"):
+            try:
+                await sent.edit_text(m.lang["play_downloading"])
+            except Exception:
+                pass
+        file.file_path = await anon.download_track(file)
 
     await anon.play_media(chat_id=m.chat.id, message=sent, media=file)
     if not tracks:
