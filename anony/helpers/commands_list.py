@@ -35,7 +35,6 @@ GROUP_COMMANDS = [
     BotCommand("ping", "Check bot latency and uptime"),
     BotCommand("stats", "View bot and system statistics"),
     BotCommand("language", "Change chat language"),
-    BotCommand("vps", "Check server disk and storage usage"),
     BotCommand("help", "Show help menu and command guide"),
 ]
 
@@ -62,7 +61,6 @@ ADMIN_COMMANDS = [
     BotCommand("ping", "Check bot latency and uptime"),
     BotCommand("stats", "View bot and system statistics"),
     BotCommand("language", "Change chat language"),
-    BotCommand("vps", "Check server disk and storage usage"),
     BotCommand("help", "Show help menu and command guide"),
 ]
 
@@ -74,7 +72,6 @@ PRIVATE_COMMANDS = [
     BotCommand("ping", "Check bot latency and uptime"),
     BotCommand("stats", "View bot and system statistics"),
     BotCommand("language", "Set bot language"),
-    BotCommand("vps", "Check server disk and storage usage"),
 ]
 
 # Default fallback commands
