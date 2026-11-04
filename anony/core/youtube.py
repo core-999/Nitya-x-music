@@ -1,3 +1,8 @@
+# Copyright (c) 2025 AnonymousX1025
+# Licensed under the MIT License.
+# This file is part of AnonXMusic
+
+
 import os
 import re
 import random
@@ -31,11 +36,18 @@ class YouTube:
 
     def get_cookies(self):
         if not self.checked:
+            # ပင်မဖိုင်တွဲ (Root) ထဲမှာရှိတဲ့ cookies.txt ကို ဦးစွာရှာဖွေခြင်း
+            root_cookie = "cookies.txt"
+            if os.path.exists(root_cookie):
+                self.cookies.append(root_cookie)
+            
+            # Kanha/cookies ဖိုင်တွဲထဲက cookies များကိုလည်း ဆက်လက်ရှာဖွေခြင်း
             if os.path.exists(self.cookie_dir):
                 for file in os.listdir(self.cookie_dir):
                     if file.endswith(".txt"):
                         self.cookies.append(f"{self.cookie_dir}/{file}")
             self.checked = True
+
         if not self.cookies:
             if not self.warned:
                 self.warned = True
@@ -82,6 +94,43 @@ class YouTube:
                 view_count=data.get("viewCount", {}).get("short"),
                 video=video,
             )
+        return None
+
+    async def get_related(self, video_id: str, title: str = "", video: bool = False) -> list[Track]:
+        """Autoplay အတွက် နောက်ဆက်တွဲ သီချင်းများကို ရှာဖွေပေးခြင်း"""
+        tracks = []
+        try:
+            query = title if title else f"songs {video_id}"
+            _search = VideosSearch(query, limit=10, with_live=False)
+            results = await _search.next()
+            if results and results["result"]:
+                for data in results["result"]:
+                    if data.get("id") == video_id:
+                        continue
+                    track = Track(
+                        id=data.get("id"),
+                        channel_name=data.get("channel", {}).get("name", ""),
+                        duration=data.get("duration"),
+                        duration_sec=utils.to_seconds(data.get("duration")),
+                        title=data.get("title", "")[:25],
+                        thumbnail=data.get("thumbnails", [{}])[-1].get("url").split("?")[0],
+                        url=data.get("link"),
+                        view_count=data.get("viewCount", {}).get("short", ""),
+                        video=video,
+                    )
+                    tracks.append(track)
+        except Exception as e:
+            logger.warning(f"Failed to fetch related tracks for autoplay: {e}")
+        return tracks
+
+    async def get_stream_url(self, video_id: str, video: bool = False) -> str | None:
+        """Autoplay အတွက် ချက်ချင်း stream လုပ်နိုင်သော URL ကို ရယူပေးခြင်း"""
+        try:
+            if getattr(config, "YT_API_URL", None) and getattr(config, "YT_API_KEY", None):
+                ep = "play/video" if video else "play/audio"
+                return f"{config.YT_API_URL.rstrip('/')}/{ep}?id={video_id}&api_key={config.YT_API_KEY}"
+        except Exception:
+            pass
         return None
 
     async def playlist(self, limit: int, user: str, url: str, video: bool) -> list[Track | None]:
