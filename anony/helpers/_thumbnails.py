@@ -1,6 +1,6 @@
 import os
 import asyncio
-import numpy as np
+#import numpy as np
 import re
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
