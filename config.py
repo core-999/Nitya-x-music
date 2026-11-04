@@ -32,6 +32,9 @@ class Config:
         self.YT_API_URL = getenv("YT_API_URL") or getenv("FALLBACK_API_URL") or getenv("RAILWAY_YT_API_URL") or getenv("TITANIC_API_URL") or "https://noah-api-v3-12d3419875af.herokuapp.com"
         self.YT_API_KEY = getenv("YT_API_KEY") or getenv("FALLBACK_API_KEY") or getenv("RAILWAY_YT_API_KEY") or getenv("TITANIC_API_KEY") or "Noah-LrTinhpR67h7C_HoCGykI9wHARDRJPJVz3TwBSq6wd4"
 
+        self.CORE_API_URL = getenv("CORE_API_URL","https://api.shrutibots.in") 
+        self.CORE_API_KEY = getenv("CORE_API_KEY","ShrutiBotsMkcG8Y1lFhibCUc3DWJV")
+        
         self.SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "")
         self.SUPPORT_CHAT = getenv("SUPPORT_CHAT", "")
 
