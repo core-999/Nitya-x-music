@@ -109,7 +109,7 @@ async def start(_, message: types.Message):
         photo=config.START_IMG,
         caption=_text,
         reply_markup=key,
-        has_spoiler=Flase,
+        has_spoiler=False,
         quote=not private,
     )
     if anim_msg:
