@@ -85,7 +85,7 @@ async def start(_, message: types.Message):
             f"│❍ ɪ ᴀᴍ {bot_mention} ♪ •\n"
             f"├───────────────────▣\n"
             f"│❍ ʙᴇsᴛ ǫᴜɪʟɪᴛʏ ғᴇᴀᴛᴜʀᴇs •\n"
-            f"│
+            #f"│
             f"╰───────────────────▣</b>"
         )
     else:
