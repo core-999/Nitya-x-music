@@ -85,7 +85,7 @@ async def start(_, message: types.Message):
             f"│❍ ɪ ᴀᴍ {bot_mention} ♪ •\n"
             f"├───────────────────▣\n"
             f"│❍ ʙᴇsᴛ ǫᴜɪʟɪᴛʏ ғᴇᴀᴛᴜʀᴇs •\n"
-            f"│❍ ᴍᴀᴅᴇ ʙʏ...{owner_mention} •\n"
+            f"│
             f"╰───────────────────▣</b>"
         )
     else:
@@ -109,7 +109,7 @@ async def start(_, message: types.Message):
         photo=config.START_IMG,
         caption=_text,
         reply_markup=key,
-        has_spoiler=True,
+        has_spoiler=Flase,
         quote=not private,
     )
     if anim_msg:
