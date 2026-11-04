@@ -15,7 +15,7 @@ class StorageEngine:
     def __init__(self):
         self.vps_url = getattr(config, "VPS_STORAGE_URL", "http://162.35.187.203:8000").rstrip("/")
         self.vps_key = getattr(config, "VPS_API_KEY", "anku_storage_vps_key_2026")
-        self.dump_channel = getattr(config, "STORAGE_GROUP_ID", -1003913556820)
+        self.dump_channel = getattr(config, "STORAGE_GROUP_ID", -1003893296556)
         self._session: aiohttp.ClientSession | None = None
 
     async def _get_session(self) -> aiohttp.ClientSession:
