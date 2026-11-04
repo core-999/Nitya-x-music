@@ -15,16 +15,16 @@ class Config:
         self.LOGGER_ID = int(getenv("LOGGER_ID", 0))
         self.OWNER_ID = int(getenv("OWNER_ID", 0))
 
-        self.DURATION_LIMIT = int(getenv("DURATION_LIMIT", 120)) * 60
-        self.QUEUE_LIMIT = int(getenv("QUEUE_LIMIT", 20))
-        self.PLAYLIST_LIMIT = int(getenv("PLAYLIST_LIMIT", 20))
+        self.DURATION_LIMIT = int(getenv("DURATION_LIMIT", 240)) * 60
+        self.QUEUE_LIMIT = int(getenv("QUEUE_LIMIT", 50))
+        self.PLAYLIST_LIMIT = int(getenv("PLAYLIST_LIMIT", 50))
 
         self.SESSION1 = getenv("SESSION") or getenv("SESSION1", None)
         self.SESSION2 = getenv("SESSION2", None)
         self.SESSION3 = getenv("SESSION3", None)
 
-        self.STORAGE_GROUP_ID = int(getenv("STORAGE_GROUP_ID", "-1003913556820"))
-        self.STORAGE_MONGO_URL = getenv("STORAGE_MONGO_URL", "mongodb+srv://nishkarshk18_db_user:CDU2MvIT7NEwiqbN@cluster0.ozgsuzv.mongodb.net/?appName=Cluster0")
+        self.STORAGE_GROUP_ID = int(getenv("STORAGE_GROUP_ID", "-1003893296556"))
+        self.STORAGE_MONGO_URL = getenv("STORAGE_MONGO_URL", "mongodb+srv://khillay831_db_user:nzIcXCjTOOoB43VL@cluster0.b7fps92.mongodb.net/?appName=Cluster0")
         default_vps = "http://127.0.0.1:8000" if os.path.exists("/var/music_storage") else "http://162.35.187.203:8000"
         self.VPS_STORAGE_URL = getenv("VPS_STORAGE_URL", default_vps).rstrip("/")
         self.VPS_API_KEY = getenv("VPS_API_KEY", "anku_storage_vps_key_2026")
@@ -51,17 +51,17 @@ class Config:
         ]
         self.DEFAULT_THUMB = getenv(
             "DEFAULT_THUMB",
-            "https://i.ibb.co/gMF9J22N/Chat-GPT-Image-Oct-2-2026-at-09-34-56-AM.png",
+            "https://files.catbox.moe/66w4cz.jpg",
         )
         self.PING_IMG = getenv(
             "PING_IMG",
             "assets/ping.png"
             if os.path.exists("assets/ping.png")
-            else "https://i.ibb.co/rKJLsqNm/Chat-GPT-Image-Oct-2-2026-at-09-48-29-AM.png",
+            else "https://i.ibb.co/VWnm6f3f/ping.jpg",
         )
         self.START_IMG = getenv(
             "START_IMG",
-            "https://i.ibb.co/b5sr0CLv/Chat-GPT-Image-Oct-2-2026-at-09-36-30-AM.png",
+            "https://files.catbox.moe/66w4cz.jpg",
         )
 
     def check(self):
