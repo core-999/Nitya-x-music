@@ -18,7 +18,7 @@ class MongoDB:
         """
         import certifi
         self.mongo = AsyncMongoClient(config.MONGO_URL, serverSelectionTimeoutMS=12500, tlsCAFile=certifi.where())
-        self.db = self.mongo.Yukki
+        self.db = self.mongo.Khhbotmusic
 
         storage_url = config.STORAGE_MONGO_URL or config.MONGO_URL
         self.storage_mongo = AsyncMongoClient(storage_url, serverSelectionTimeoutMS=12500, tlsCAFile=certifi.where())
