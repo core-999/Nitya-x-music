@@ -1,6 +1,7 @@
-aiohttp~=3.14.3
+Aiohttp~=3.14.3
 kurigram>=2.2.25
 ntgcalls==3.0.0rc1
+numpy~=1.26.4          <--- ဒီနေရာမှာ အသစ်ထည့်ပေးပါ
 pillow~=12.3.0
 psutil~=7.2.2
 py-tgcalls==3.0.0rc1
