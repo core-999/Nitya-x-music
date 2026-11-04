@@ -31,9 +31,10 @@ class YouTube:
 
     def get_cookies(self):
         if not self.checked:
-            for file in os.listdir(self.cookie_dir):
-                if file.endswith(".txt"):
-                    self.cookies.append(f"{self.cookie_dir}/{file}")
+            if os.path.exists(self.cookie_dir):
+                for file in os.listdir(self.cookie_dir):
+                    if file.endswith(".txt"):
+                        self.cookies.append(f"{self.cookie_dir}/{file}")
             self.checked = True
         if not self.cookies:
             if not self.warned:
@@ -44,6 +45,7 @@ class YouTube:
 
     async def save_cookies(self, urls: list[str]) -> None:
         logger.info("Saving cookies from urls...")
+        os.makedirs(self.cookie_dir, exist_ok=True)
         async with aiohttp.ClientSession() as session:
             for url in urls:
                 name = url.split("/")[-1]
@@ -108,13 +110,13 @@ class YouTube:
         ext = "mp4" if video else "webm"
         filename = f"downloads/{video_id}.{ext}"
 
-        if Path(filename).exists():
+        if Path(filename).exists() and os.path.getsize(filename) > 10000:
             return filename
 
         os.makedirs("downloads", exist_ok=True)
         stream_type = "video" if video else "audio"
         
-        # ပေးထားသော API Documentation အတိုင်း သတ်မှတ်ချက်များ ထည့်သွင်းခြင်း
+        # API ကို ဦးစွာ သုံးပြီး ဒေါင်းလုဒ်လုပ်ရန် ကြိုးစားခြင်း
         api_url = "https://api.shrutibots.in/download"
         target_url = f"{self.base}{video_id}"
         
@@ -129,29 +131,53 @@ class YouTube:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(api_url, params=params, timeout=timeout) as resp:
-                    if resp.status != 200:
-                        logger.warning(
-                            f"API download failed ({resp.status}) for {video_id}."
-                        )
-                        return None
-                    with open(filename, "wb") as fw:
-                        async for chunk in resp.content.iter_chunked(131072):
-                            fw.write(chunk)
+                    if resp.status == 200:
+                        with open(filename, "wb") as fw:
+                            async for chunk in resp.content.iter_chunked(131072):
+                                fw.write(chunk)
+                        if Path(filename).exists() and os.path.getsize(filename) > 10000:
+                            return filename
+                    
+                    logger.warning(f"API download failed ({resp.status}) for {video_id}. Falling back to yt-dlp...")
         except Exception as ex:
-            logger.warning(f"Download failed: {ex}")
-            if Path(filename).exists():
-                try:
-                    os.remove(filename)
-                except Exception:
-                    pass
-            return None
+            logger.warning(f"API download error: {ex}. Falling back to yt-dlp...")
 
-        if Path(filename).exists() and os.path.getsize(filename) > 10000:
-            return filename
+        # API အဆင်မပြေပါက yt-dlp ဖြင့် အလိုအလျောက် ဆက်လက်ဒေါင်းလုဒ်လုပ်ခြင်း (Fallback)
+        return await self._download_via_ytdlp(video_id, video)
 
-        if Path(filename).exists():
-            try:
-                os.remove(filename)
-            except Exception:
-                pass
+    async def _download_via_ytdlp(self, video_id: str, video: bool = False) -> str | None:
+        """API ကျရှုံးပါက yt-dlp ဖြင့် အစားထိုး ဒေါင်းလုဒ်လုပ်ပေးမည့် Method"""
+        try:
+            import yt_dlp
+            ext = "mp4" if video else "webm"
+            filename = f"downloads/{video_id}.{ext}"
+            
+            if Path(filename).exists() and os.path.getsize(filename) > 10000:
+                return filename
+
+            os.makedirs("downloads", exist_ok=True)
+            
+            ydl_opts = {
+                "format": "bestvideo+bestaudio/best" if video else "bestaudio/best",
+                "outtmpl": f"downloads/{video_id}.%(ext)s",
+                "quiet": True,
+                "no_warnings": True,
+            }
+            
+            cookie_file = self.get_cookies()
+            if cookie_file:
+                ydl_opts["cookiefile"] = cookie_file
+
+            def download_sync():
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(f"{self.base}{video_id}", download=True)
+                    return ydl.prepare_filename(info)
+
+            loop = asyncio.get_running_loop()
+            file_path = await loop.run_in_executor(None, download_sync)
+            
+            if file_path and Path(file_path).exists() and os.path.getsize(file_path) > 10000:
+                return file_path
+        except Exception as e:
+            logger.warning(f"yt-dlp fallback failed: {e}")
         return None
