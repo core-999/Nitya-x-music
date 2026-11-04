@@ -46,7 +46,7 @@ async def start(_, message: types.Message):
         pass
 
     anim_frames = [
-        "<blockquote><b>⟡ Sᴛᴀʀᴛɪɴɢ Nɪᴛʏᴀ Mᴜsɪᴄ...</b></blockquote>",
+        "<blockquote><b>⟡ Sᴛᴀʀᴛɪɴɢ Mᴜsɪᴄ...</b></blockquote>",
         "<blockquote><b>⟡ Lᴏᴀᴅɪɴɢ Cᴏʀᴇ Mᴏᴅᴜʟᴇs... ⚙️</b></blockquote>",
         "<blockquote><b>⟡ Cᴏɴɴᴇᴄᴛɪɴɢ Sᴇʀᴠᴇʀs... ⚡</b></blockquote>",
         "<blockquote><b>⟡ Iɴɪᴛɪᴀʟɪᴢᴀᴛɪᴏɴ Cᴏᴍᴘʟᴇᴛᴇ! ✨</b></blockquote>",
